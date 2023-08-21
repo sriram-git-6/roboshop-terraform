@@ -1,18 +1,14 @@
-terraform {
-  backend "s3" {}
+module "components" {
+
+
+  source   = "git::https://github.com/sriram-git-6/tf-module-basic-test.git"
+  for_each = var.components
+
+
+  security_groups            = var.security_groups
+  zone_id                    = var.zone_id
+  name                       = each.value["name"]
+  instance_type              = each.value["instance_type"]
 }
 
-variable "test" {}
 
-output "test" {
-  value = var.test
-}
-
-
-# terraform init -backend-config=env-dev/state.tfvars
-# terraform apply -auto-approve -var-file=env-dev/main.tfvars
-
-# delete the .terraform folder to run below commands because u are here changing the environment.
-
-# terraform init -backend-config=env-prod/state.tfvars
-# terraform apply -auto-approve -var-file=env-prod/main.tfvars
